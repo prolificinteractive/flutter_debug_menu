@@ -225,13 +225,15 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
 
   /// Check image for the toggleable menu actions.
   Widget _checkImageItem(bool selected) {
-    const String rootPath = 'lib/debug_menu/assets';
+    const String rootPath = 'lib/assets';
     if (selected) {
       return Image.asset('$rootPath/check_circle/check_circle.png',
+          package: "debug_menu",
           fit: BoxFit.fitWidth);
     } else {
       return Image.asset(
           '$rootPath/check_circle_outline/check_circle_outline.png',
+          package: "debug_menu",
           fit: BoxFit.fitWidth);
     }
   }

@@ -9,18 +9,18 @@ ios/.generated/
 ios/Flutter/Generated.xcconfig
 ios/Runner/GeneratedPluginRegistrant.*
 
-pubspec.lock  // Except for application packages
+pubspec.lock
 
 doc/api/
 
-*.iml         // IntelliJ
-*.ipr         // IntelliJ
-*.iws         // IntelliJ
-.idea/        // IntelliJ
-.DS_Store     // Mac
+*.iml
+*.ipr
+*.iws
+.idea/
+.DS_Store
 
 *.dart.js
-*.info.json      
+*.info.json
 *.js
 
 *.js_

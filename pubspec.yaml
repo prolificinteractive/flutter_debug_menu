@@ -1,9 +1,9 @@
 author: "Prolific Interactive"
 dependencies:
   dio: "2.0.1"
+  package_info: ^0.4.0+3
   flutter:
     sdk: flutter
-  package_info: ^0.4.0+3
 description: "A debug menu for Flutter"
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:debug_menu/core/platform_version.dart';
 import 'package:debug_menu/menu_actions/menu_action.dart';
 import 'package:debug_menu/menu_actions/multi_menu_action.dart';
 import 'package:debug_menu/menu_actions/single_menu_action.dart';
@@ -7,9 +8,11 @@ import 'package:debug_menu/menu_actions/toggle_menu_action.dart';
 import 'package:debug_menu/network_activity/debug_menu_interceptor.dart';
 import 'package:debug_menu/network_activity/network_activity_screen.dart';
 import 'package:debug_menu/network_activity/network_request_item/network_request_item.dart';
+import 'package:debug_menu/settings_action.dart';
 import 'package:debug_menu/shared/constants.dart';
 import 'package:debug_menu/shared/text_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
 ///This widget holds the debug menu UI and logic
@@ -37,7 +40,8 @@ class DebugMenuScreen extends StatefulWidget {
 class _DebugMenuScreenState extends State<DebugMenuScreen> {
   _DebugMenuScreenState(this._title, this._actions, this._onBackPressed,
       this._logNetworkRequests) {
-    getApplicationInfo();
+    _getApplicationInfo();
+    _getPlatformVersion();
   }
 
   /// Title of the application.
@@ -56,6 +60,7 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
   String _packageName = '';
   String _version = '';
   String _buildNumber = '';
+  String _platformVersion = '';
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +109,9 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
               TextItem('Version: ', Constants.defaultTextStyle(), _version),
               TextItem(
                   'Build Number: ', Constants.defaultTextStyle(), _buildNumber),
-              _networkActivityItem()
+              TextItem('Platform Version: ', Constants.defaultTextStyle(),
+                  _platformVersion),
+              _networkActivityItem(),
             ])));
   }
 
@@ -228,12 +235,11 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
     const String rootPath = 'lib/assets';
     if (selected) {
       return Image.asset('$rootPath/check_circle/check_circle.png',
-          package: "debug_menu",
-          fit: BoxFit.fitWidth);
+          package: Constants.debugMenuPackage, fit: BoxFit.fitWidth);
     } else {
       return Image.asset(
           '$rootPath/check_circle_outline/check_circle_outline.png',
-          package: "debug_menu",
+          package: Constants.debugMenuPackage,
           fit: BoxFit.fitWidth);
     }
   }
@@ -252,13 +258,30 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
   }
 
   /// Gets the application info for the header.
-  Future<void> getApplicationInfo() async {
+  Future<void> _getApplicationInfo() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     setState(() {
       _packageName = '\n${packageInfo.packageName ?? ''}';
       _version = '${packageInfo.version ?? ''}';
       _buildNumber = '${packageInfo.buildNumber ?? ''}';
+    });
+  }
+
+  /// Gets the platform version for the header.
+  Future<void> _getPlatformVersion() async {
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      platformVersion = await PlatformVersion.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
     });
   }
 }

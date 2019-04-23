@@ -1,0 +1,28 @@
+PODS:
+  - debug_menu (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - package_info (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - debug_menu (from `.symlinks/plugins/debug_menu/ios`)
+  - Flutter (from `.symlinks/flutter/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
+
+EXTERNAL SOURCES:
+  debug_menu:
+    :path: ".symlinks/plugins/debug_menu/ios"
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
+
+SPEC CHECKSUMS:
+  debug_menu: 67284e6ae58f4ae7a19877daaa76b604ea271173
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  package_info: d7c98b64f60add4c2908b9d94d82a45d3c8827ad
+
+PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497
+
+COCOAPODS: 1.5.3

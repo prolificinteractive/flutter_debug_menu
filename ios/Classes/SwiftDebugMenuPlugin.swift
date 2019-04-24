@@ -9,7 +9,6 @@ public class SwiftDebugMenuPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-
     if call.method == "goToApplicationSettings"  {
        openSettings()
     } else if call.method == "getPlatformVersion" {
@@ -30,8 +29,7 @@ public class SwiftDebugMenuPlugin: NSObject, FlutterPlugin {
       if #available(iOS 10.0, *) {
           UIApplication.shared.open(settingsURL)
       } else {
-          // Fallback on earlier versions
-          // Do nothing because this is a test app
+          return false
       }
       return true
   }

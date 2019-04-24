@@ -8,8 +8,12 @@ class Settings {
       const MethodChannel(Constants.debugMenuPlatformChannel);
 
   static Future<void> openApplicationSettings() async {
+    String result;
     try {
-      await _channel.invokeMethod(Constants.settingsMethodName);
+      result = await _channel.invokeMethod(Constants.settingsMethodName);
+      if (result == "Cannot open settings") {
+        throw Exception("Cannot open settings");
+      }
     } on PlatformException catch (e) {
       print(e);
     }

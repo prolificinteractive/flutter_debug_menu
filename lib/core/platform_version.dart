@@ -8,8 +8,11 @@ class PlatformVersion {
       const MethodChannel(Constants.debugMenuPlatformChannel);
 
   static Future<String> get platformVersion async {
-    final String version =
-        await _channel.invokeMethod(Constants.platformVersionMethodName);
-    return version;
+    Map result = {};
+    result = await _channel.invokeMethod(Constants.platformVersionMethodName);
+    var platform = result["Platform"];
+    var version = result["Version"];
+    var versionString = platform + " " + version;
+    return versionString;
   }
 }

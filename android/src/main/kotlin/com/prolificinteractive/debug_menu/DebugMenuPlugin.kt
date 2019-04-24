@@ -32,7 +32,10 @@ class DebugMenuPlugin(registrar: Registrar) : MethodCallHandler {
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+      val map = HashMap<String, String>()
+      map.put("Platform", "Android")
+      map.put("Version", "${android.os.Build.VERSION.RELEASE}")
+      result.success(map)
     } else if (call.method == "goToApplicationSettings") {
       openSettings()
     } else {

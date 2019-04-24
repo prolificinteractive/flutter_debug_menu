@@ -37,7 +37,8 @@ class RootDebugContainer extends StatefulWidget {
       child, menuActions, title, isProduction, gestureType, logNetworkRequests);
 }
 
-class _RootDebugContainerState extends State<RootDebugContainer> {
+class _RootDebugContainerState extends State<RootDebugContainer>
+    with TickerProviderStateMixin {
   _RootDebugContainerState(this._child, this._menuActions, this._title,
       this._isProduction, this._gestureType, this._logNetworkRequests);
 
@@ -68,24 +69,36 @@ class _RootDebugContainerState extends State<RootDebugContainer> {
     if (_isProduction) {
       return _child;
     } else if (_showDebugMenu) {
-      return MaterialApp(
-          theme: ThemeData(primaryColor: Colors.white),
-          home: DebugMenuScreen(
-              _title, _menuActions, _onDebugBackPressed, _logNetworkRequests));
+      return _buildDebugMenu(_showDebugMenu);
     } else {
-      return GestureDetector(
-          onDoubleTap: () {
-            if (_gestureType == GestureType.doubleTap) {
-              _presentDebugMenu();
-            }
-          },
-          onLongPress: () {
-            if (_gestureType == GestureType.longPress) {
-              _presentDebugMenu();
-            }
-          },
-          child: _child);
+      return _buildDebugContainer(_showDebugMenu);
     }
+  }
+
+  /// Builds the debug container, which contains the app contents
+  /// but also overlays it with a gesture detector to switch between
+  /// the menu and the app
+  Widget _buildDebugContainer(bool visible) {
+    return GestureDetector(
+        onDoubleTap: () {
+          if (_gestureType == GestureType.doubleTap) {
+            _presentDebugMenu();
+          }
+        },
+        onLongPress: () {
+          if (_gestureType == GestureType.longPress) {
+            _presentDebugMenu();
+          }
+        },
+        child: _child);
+  }
+
+  /// Builds the debug menu
+  Widget _buildDebugMenu(bool visible) {
+    return MaterialApp(
+        theme: ThemeData(primaryColor: Colors.white),
+        home: DebugMenuScreen(_title, _menuActions, _onDebugBackPressed,
+            _logNetworkRequests));
   }
 
   /// Hides the debug menu.

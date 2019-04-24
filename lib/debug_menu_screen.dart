@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:debug_menu/core/platform_version.dart';
+import 'package:debug_menu/menu_actions/button_action.dart';
 import 'package:debug_menu/menu_actions/menu_action.dart';
 import 'package:debug_menu/menu_actions/multi_menu_action.dart';
 import 'package:debug_menu/menu_actions/single_menu_action.dart';
@@ -8,7 +9,6 @@ import 'package:debug_menu/menu_actions/toggle_menu_action.dart';
 import 'package:debug_menu/network_activity/debug_menu_interceptor.dart';
 import 'package:debug_menu/network_activity/network_activity_screen.dart';
 import 'package:debug_menu/network_activity/network_request_item/network_request_item.dart';
-import 'package:debug_menu/settings_action.dart';
 import 'package:debug_menu/shared/constants.dart';
 import 'package:debug_menu/shared/text_item.dart';
 import 'package:flutter/material.dart';
@@ -151,9 +151,27 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
       return _multiMenuItem(action, index);
     } else if (action is SingleMenuAction) {
       return _singleMenuItem(action);
+    } else if (action is ButtonAction) {
+      return _buttonItem(action);
     } else {
       return Container();
     }
+  }
+
+  /// Button menu item type allows for single action to be taken with debug menu
+  Widget _buttonItem(ButtonAction action) {
+    return Row(children: <Widget>[
+      Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(Constants.defaultPadding),
+            child: FlatButton(
+        child: Text(action.title, textAlign: TextAlign.left),
+        color: Colors.blueGrey[400],
+        textColor: Colors.white,
+        onPressed: action.tapped,
+      ),
+          ))
+    ]);
   }
 
   /// Toggle menu item type allows for the selection of an item.

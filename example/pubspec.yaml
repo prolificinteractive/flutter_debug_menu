@@ -17,6 +17,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  debug_menu_dio_networking:
+    path: ../../debug_menu_dio_networking
   debug_menu:
     path: ../
 

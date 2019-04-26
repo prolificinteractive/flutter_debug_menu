@@ -1,11 +1,13 @@
 import 'package:debug_menu/gesture_type.dart';
+import 'package:debug_menu/menu_action.dart';
 import 'package:debug_menu/menu_actions/button_action.dart';
-import 'package:debug_menu/menu_actions/menu_action.dart';
 import 'package:debug_menu/menu_actions/multi_menu_action.dart';
 import 'package:debug_menu/menu_actions/single_menu_action.dart';
 import 'package:debug_menu/menu_actions/toggle_menu_action.dart';
 import 'package:debug_menu/root_container.dart';
 import 'package:debug_menu/settings_action.dart';
+import 'package:debug_menu_dio_networking/core/network_activity.dart';
+import 'package:debug_menu_dio_networking/dio_networking_action.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -58,6 +60,10 @@ class _MyAppState extends State<MyApp> {
     final ButtonAction action =
         ButtonAction("Test", () => print("This worked"));
 
+    final DioNetworkingAction dioNetworkingAction =
+        DioNetworkingAction(NetworkActivity.provideNetworkActivityScreen());
+
+    actions.add(dioNetworkingAction);
     actions.add(emptyMultiMenuAction);
     actions.add(toggleMenuItem);
     actions.add(singleMenuAction);

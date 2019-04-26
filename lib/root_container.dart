@@ -1,6 +1,6 @@
 import 'package:debug_menu/debug_menu_screen.dart';
 import 'package:debug_menu/gesture_type.dart';
-import 'package:debug_menu/menu_actions/menu_action.dart';
+import 'package:debug_menu/menu_action.dart';
 import 'package:flutter/material.dart';
 
 ///This class wraps the top level widget in order to provide debug functionality to the applicationn
@@ -10,8 +10,7 @@ class RootDebugContainer extends StatefulWidget {
       @required this.title,
       @required this.menuActions,
       @required this.isProduction,
-      this.gestureType = GestureType.doubleTap,
-      this.logNetworkRequests = true});
+      this.gestureType = GestureType.doubleTap});
 
   /// Root widget of the application.
   final Widget child;
@@ -29,18 +28,15 @@ class RootDebugContainer extends StatefulWidget {
   /// Debug menu activation gesture.
   final GestureType gestureType;
 
-  /// Flag to determine if network requests should be logged.
-  final bool logNetworkRequests;
-
   @override
   State<StatefulWidget> createState() => _RootDebugContainerState(
-      child, menuActions, title, isProduction, gestureType, logNetworkRequests);
+      child, menuActions, title, isProduction, gestureType);
 }
 
 class _RootDebugContainerState extends State<RootDebugContainer>
     with TickerProviderStateMixin {
   _RootDebugContainerState(this._child, this._menuActions, this._title,
-      this._isProduction, this._gestureType, this._logNetworkRequests);
+      this._isProduction, this._gestureType);
 
   /// Root widget of the application.
   final Widget _child;
@@ -54,9 +50,6 @@ class _RootDebugContainerState extends State<RootDebugContainer>
 
   /// Debug menu activation gesture.
   final GestureType _gestureType;
-
-  /// Flag to determine if network requests should be logged.
-  final bool _logNetworkRequests;
 
   /// Menu action items to present.
   List<MenuAction> _menuActions;
@@ -97,8 +90,7 @@ class _RootDebugContainerState extends State<RootDebugContainer>
   Widget _buildDebugMenu(bool visible) {
     return MaterialApp(
         theme: ThemeData(primaryColor: Colors.white),
-        home: DebugMenuScreen(_title, _menuActions, _onDebugBackPressed,
-            _logNetworkRequests));
+        home: DebugMenuScreen(_title, _menuActions, _onDebugBackPressed));
   }
 
   /// Hides the debug menu.

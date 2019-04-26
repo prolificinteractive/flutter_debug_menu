@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:debug_menu/menu_actions/menu_action.dart';
+import 'package:debug_menu/menu_action.dart';
 
 class ButtonAction implements MenuAction {
   ButtonAction(this.title, this.tappedCallback);

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:debug_menu/menu_actions/menu_action.dart';
+import 'package:debug_menu/menu_action.dart';
 
 class ToggleMenuAction implements MenuAction {
   ToggleMenuAction(this.title, this.description, this._actionSelectedCallback,

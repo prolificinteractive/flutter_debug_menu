@@ -10,7 +10,9 @@ environment:
 dependencies:
   dio: "2.0.1"
   debug_menu:
-    path: ../debug_menu
+    git:
+      url: https://github.com/prolificinteractive/flutter_debug_menu.git
+      path: debug_menu
   flutter:
     sdk: flutter
 

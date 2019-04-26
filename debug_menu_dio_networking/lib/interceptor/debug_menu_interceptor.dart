@@ -1,7 +1,7 @@
-import 'package:debug_menu/network_activity/network_request_item/error_network_request_item.dart';
-import 'package:debug_menu/network_activity/network_request_item/network_request_item.dart';
-import 'package:debug_menu/network_activity/network_request_item/options_network_request_item.dart';
-import 'package:debug_menu/network_activity/network_request_item/response_network_request_item.dart';
+import 'package:debug_menu_dio_networking/network_request_item/error_network_request_item.dart';
+import 'package:debug_menu_dio_networking/network_request_item/network_request_item.dart';
+import 'package:debug_menu_dio_networking/network_request_item/options_network_request_item.dart';
+import 'package:debug_menu_dio_networking/network_request_item/response_network_request_item.dart';
 import 'package:dio/dio.dart';
 
 class DebugMenuInterceptor extends InterceptorsWrapper {

@@ -1,6 +1,6 @@
-import 'package:debug_menu/network_activity/network_request_item/network_request_item.dart';
 import 'package:debug_menu/shared/constants.dart';
 import 'package:debug_menu/shared/text_item.dart';
+import 'package:debug_menu_dio_networking/network_request_item/network_request_item.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 

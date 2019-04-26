@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:debug_menu/core/platform_version.dart';
-import 'package:debug_menu/menu_actions/menu_action.dart';
+import 'package:debug_menu/menu_action.dart';
+import 'package:debug_menu/menu_actions/button_action.dart';
 import 'package:debug_menu/menu_actions/multi_menu_action.dart';
+import 'package:debug_menu/menu_actions/routing_button_action.dart';
 import 'package:debug_menu/menu_actions/single_menu_action.dart';
 import 'package:debug_menu/menu_actions/toggle_menu_action.dart';
-import 'package:debug_menu/network_activity/debug_menu_interceptor.dart';
-import 'package:debug_menu/network_activity/network_activity_screen.dart';
-import 'package:debug_menu/network_activity/network_request_item/network_request_item.dart';
-import 'package:debug_menu/settings_action.dart';
 import 'package:debug_menu/shared/constants.dart';
 import 'package:debug_menu/shared/text_item.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +15,7 @@ import 'package:package_info/package_info.dart';
 
 ///This widget holds the debug menu UI and logic
 class DebugMenuScreen extends StatefulWidget {
-  const DebugMenuScreen(this._title, this._actions, this._onBackPressed,
-      this._logNetworkRequests);
+  const DebugMenuScreen(this._title, this._actions, this._onBackPressed);
 
   /// Title of the application.
   final String _title;
@@ -29,17 +26,13 @@ class DebugMenuScreen extends StatefulWidget {
   /// Called when the back button is pressed.
   final VoidCallback _onBackPressed;
 
-  /// Flag to determine if network requests should be logged.
-  final bool _logNetworkRequests;
-
   @override
-  State<StatefulWidget> createState() => _DebugMenuScreenState(
-      _title, _actions, _onBackPressed, _logNetworkRequests);
+  State<StatefulWidget> createState() =>
+      _DebugMenuScreenState(_title, _actions, _onBackPressed);
 }
 
 class _DebugMenuScreenState extends State<DebugMenuScreen> {
-  _DebugMenuScreenState(this._title, this._actions, this._onBackPressed,
-      this._logNetworkRequests) {
+  _DebugMenuScreenState(this._title, this._actions, this._onBackPressed) {
     _getApplicationInfo();
     _getPlatformVersion();
   }
@@ -52,9 +45,6 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
 
   /// Called when the back button is pressed.
   final VoidCallback _onBackPressed;
-
-  /// Flag to determine if network requests should be logged.
-  final bool _logNetworkRequests;
 
   /// Application information.
   String _packageName = '';
@@ -111,36 +101,7 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
                   'Build Number: ', Constants.defaultTextStyle(), _buildNumber),
               TextItem('Platform Version: ', Constants.defaultTextStyle(),
                   _platformVersion),
-              _networkActivityItem(),
             ])));
-  }
-
-  /// Widget for the network activity button.
-  Widget _networkActivityItem() {
-    if (_logNetworkRequests) {
-      return Row(children: <Widget>[
-        Expanded(
-            child: FlatButton(
-          child: const Text('View Network Activity', textAlign: TextAlign.left),
-          color: Colors.blueGrey[400],
-          textColor: Colors.white,
-          onPressed: _routeToNetworkActivityScreen,
-        ))
-      ]);
-    } else {
-      return Container();
-    }
-  }
-
-  /// Routes to the network activity screen.
-  void _routeToNetworkActivityScreen() {
-    final List<NetworkRequestItem> requestFormatterList =
-        DebugMenuInterceptor.getRequestFormatterList();
-    Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-            builder: (BuildContext context) =>
-                NetworkActivityScreen(requestFormatterList)));
   }
 
   /// Build the menu item list based on the action and the index.
@@ -151,9 +112,50 @@ class _DebugMenuScreenState extends State<DebugMenuScreen> {
       return _multiMenuItem(action, index);
     } else if (action is SingleMenuAction) {
       return _singleMenuItem(action);
+    } else if (action is ButtonAction) {
+      return _buttonItem(action);
+    } else if (action is RoutingButtonAction) {
+      return _routingButtonAction(action);
     } else {
       return Container();
     }
+  }
+
+  /// Button menu item type allows for single action to be taken with debug menu
+  Widget _buttonItem(ButtonAction action) {
+    return Row(children: <Widget>[
+      Expanded(
+          child: Padding(
+        padding: const EdgeInsets.all(Constants.defaultPadding),
+        child: FlatButton(
+          child: Text(action.title, textAlign: TextAlign.left),
+          color: Colors.blueGrey[400],
+          textColor: Colors.white,
+          onPressed: action.tapped,
+        ),
+      ))
+    ]);
+  }
+
+  Widget _routingButtonAction(RoutingButtonAction action) {
+    return Row(children: <Widget>[
+      Expanded(
+          child: Padding(
+        padding: const EdgeInsets.all(Constants.defaultPadding),
+        child: FlatButton(
+          child: Text(action.title, textAlign: TextAlign.left),
+          color: Colors.blueGrey[400],
+          textColor: Colors.white,
+          onPressed: () => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            action.viewToRouteTo))
+              },
+        ),
+      ))
+    ]);
   }
 
   /// Toggle menu item type allows for the selection of an item.

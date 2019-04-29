@@ -17,10 +17,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  debug_menu_dio_networking:
-    path: ../../debug_menu_dio_networking
   debug_menu:
-    path: ../
+    git:
+      url: https://github.com/prolificinteractive/flutter_debug_menu.git
+      path: debug_menu
+  debug_menu_dio_networking:
+    git:
+      url: https://github.com/prolificinteractive/flutter_debug_menu.git
+      path: debug_menu_dio_networking
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

@@ -5,10 +5,10 @@ import 'package:debug_menu_dio_networking/network_request_item/response_network_
 import 'package:dio/dio.dart';
 
 class DebugMenuInterceptor extends InterceptorsWrapper {
-  DebugMenuInterceptor({this.isProduction});
+  DebugMenuInterceptor({this.isProduction, this.requestItemList});
 
   /// Debug request list.
-  static final List<NetworkRequestItem> _requestItemList =
+  List<NetworkRequestItem> requestItemList =
       List<NetworkRequestItem>();
 
   /// Flag to determine if the app is in production. Disables logging for
@@ -18,7 +18,7 @@ class DebugMenuInterceptor extends InterceptorsWrapper {
   @override
   void onRequest(RequestOptions options) {
     if (!isProduction) {
-      _requestItemList.add(OptionsNetworkRequestItem(options));
+      requestItemList.add(OptionsNetworkRequestItem(options));
     }
     super.onRequest(options);
   }
@@ -27,7 +27,7 @@ class DebugMenuInterceptor extends InterceptorsWrapper {
   // ignore: always_specify_types
   void onResponse(Response response) {
     if (!isProduction) {
-      _requestItemList.add(ResponseNetworkRequestItem(response));
+      requestItemList.add(ResponseNetworkRequestItem(response));
     }
     super.onResponse(response);
   }
@@ -35,13 +35,13 @@ class DebugMenuInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioError err) {
     if (!isProduction) {
-      _requestItemList.add(ErrorNetworkRequestItem(err));
+      requestItemList.add(ErrorNetworkRequestItem(err));
     }
     super.onError(err);
   }
 
   /// Returns the list of the request formatter.
-  static List<NetworkRequestItem> getRequestFormatterList() {
-    return _requestItemList.reversed.toList();
+  List<NetworkRequestItem> getRequestFormatterList() {
+    return requestItemList.reversed.toList();
   }
 }
